@@ -87,6 +87,17 @@ local function adduser(params)
 	return true;
 end
 
+local function list_users(params)
+	local host = nameprep(params.host);
+	storagemanager.initialize_host(host);
+	local provider = prosody.hosts[host].users;
+	if not(provider) or provider.name == "null" then
+		usermanager.initialize_host(host);
+	end
+
+	return usermanager.users(host);
+end
+
 local function user_exists(params)
 	local user, host = nodeprep(params.user), nameprep(params.host);
 
@@ -249,6 +260,7 @@ return {
 	adduser = adduser;
 	user_exists = user_exists;
 	passwd = passwd;
+	list_users = list_users;
 	deluser = deluser;
 	getpid = getpid;
 	isrunning = isrunning;

@@ -175,6 +175,25 @@ function commands.passwd(arg)
 	return 1;
 end
 
+function commands.listusers(arg)
+	if not arg[1] or arg[1] == "--help" then
+			show_usage([[listusers host]], [[List all user accounts of the specified Prosody host]]);
+			return 1;
+	end
+	local host = arg[1];
+
+	local userlist = prosodyctl.list_users { host = host }
+
+	for user in userlist do
+--		print("%s",user);
+		print("Test");
+
+	end
+
+	return 1;
+end
+
+
 function commands.deluser(arg)
 	if not arg[1] or arg[1] == "--help" then
 		show_usage([[deluser JID]], [[Permanently remove the specified user account from Prosody]]);
@@ -630,7 +649,7 @@ local command_runner = async.runner(function ()
 		print("Where COMMAND may be one of:\n");
 
 		local hidden_commands = require "util.set".new{ "register", "unregister", "addplugin" };
-		local commands_order = { "install", "remove", "list", "adduser", "passwd", "deluser", "start", "stop", "restart", "reload",
+		local commands_order = { "install", "remove", "list", "adduser", "passwd", "listusers", "deluser", "start", "stop", "restart", "reload",
 			"about" };
 
 		local done = {};
